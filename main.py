@@ -49,7 +49,14 @@ def select_duration():
         (300, "5 Dakika"),
     ]
     while True:
+        screen.fill((0, 0, 0))
         option_rects = []
+        for i, (_, label) in enumerate(options):
+            pos = (WIDTH // 2, HEIGHT // 2 - 90 + i * 60)
+            rect = draw_button(label, pos)
+            option_rects.append(rect)
+        pygame.display.flip()
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -58,18 +65,16 @@ def select_duration():
                 for (secs, _), rect in zip(options, option_rects):
                     if rect.collidepoint(event.pos):
                         return secs * 1000
-
-        screen.fill((0, 0, 0))
-        for i, (_, label) in enumerate(options):
-            pos = (WIDTH // 2, HEIGHT // 2 - 90 + i * 60)
-            rect = draw_button(label, pos)
-            option_rects.append(rect)
-        pygame.display.flip()
         clock.tick(60)
 
 
 def main_menu():
     while True:
+        screen.fill((0, 0, 0))
+        start_rect = draw_button("Başla", (WIDTH // 2, HEIGHT // 2 - 50))
+        exit_rect = draw_button("Kapat", (WIDTH // 2, HEIGHT // 2 + 50))
+        pygame.display.flip()
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -80,11 +85,6 @@ def main_menu():
                 if exit_rect.collidepoint(event.pos):
                     pygame.quit()
                     sys.exit()
-
-        screen.fill((0, 0, 0))
-        start_rect = draw_button("Başla", (WIDTH // 2, HEIGHT // 2 - 50))
-        exit_rect = draw_button("Kapat", (WIDTH // 2, HEIGHT // 2 + 50))
-        pygame.display.flip()
         clock.tick(60)
 
 
@@ -98,8 +98,13 @@ def run_game(duration_ms):
     start_time = pygame.time.get_ticks()
     end_time = start_time + duration_ms
 
-    exit_rect = None
+    exit_rect = pygame.Rect(0, 0, 0, 0)
     while pygame.time.get_ticks() < end_time:
+        screen.fill((0, 0, 0))
+        pygame.draw.circle(screen, current_color, (WIDTH // 2, HEIGHT // 2), 75)
+        exit_rect = draw_button("Kapat", (WIDTH - 60, 30))
+        pygame.display.flip()
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 return
@@ -126,10 +131,6 @@ def run_game(duration_ms):
             else:
                 waiting_for_press = False
 
-        screen.fill((0, 0, 0))
-        pygame.draw.circle(screen, current_color, (WIDTH // 2, HEIGHT // 2), 75)
-        exit_rect = draw_button("Kapat", (WIDTH - 60, 30))
-        pygame.display.flip()
         clock.tick(60)
 
     # Calculate average reaction time
