@@ -17,11 +17,11 @@ COLORS = [
     GREEN,
     (255, 0, 0),
     (0, 0, 255),
-    (255, 255, 0),
+    (255, 255, 255),
     (255, 0, 255),
 ]
 
-COLOR_CHANGE_INTERVAL = 4000  # milliseconds
+COLOR_CHANGE_INTERVAL = 3000  # milliseconds
 GAME_DURATION = 5 * 60 * 1000  # default game duration in milliseconds
 
 
