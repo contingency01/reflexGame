@@ -18,7 +18,8 @@ python main.py
 
 ## Gameplay
 
-- The main menu has two buttons: **Start Game** and **Exit**.
-- During the game a circle in the center of the screen changes color every 4 seconds.
-- When the circle turns green, press the **Space** key as quickly as possible.
-- The game lasts for five minutes and calculates your average reaction time in milliseconds.
+- The main menu lets you start the game or exit the application. Buttons highlight when hovered.
+- After choosing **Start Game** you can select how long the round will last.
+- During the game a circle in the center of the screen changes color every 4 seconds. When it turns green, press **Space** as quickly as possible and the circle will immediately switch to a new color.
+- An **Exit** button in the top‑right corner lets you leave the game early.
+- At the end of the round your average reaction time is shown.
