@@ -97,7 +97,7 @@ def show_leaderboard():
         draw_text("Leaderboard", (WIDTH // 2, 40))
         y = 100
         for i, entry in enumerate(data, start=1):
-            line = f"{i}. Avg: {entry['average']:.2f} ms Times: {entry['times']}"
+            line = f"{i}. Ortalama: {entry['Ortalama']:.2f} ms Süreler: {entry['Süreler']}"
             draw_text(line, (WIDTH // 2, y))
             y += 40
         back_rect = draw_button("Geri", (WIDTH // 2, HEIGHT - 40))
@@ -187,7 +187,7 @@ def run_game(duration_ms):
     # Save results to leaderboard
     avg = sum(responses) / len(responses) if responses else 0
     data = load_leaderboard()
-    data.append({"average": avg, "times": responses})
+    data.append({"Ortalama": avg, "Süreler": responses})
     save_leaderboard(data)
 
 
