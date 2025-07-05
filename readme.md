@@ -22,4 +22,4 @@ python main.py
 - **Başla** seçeneğine tıkladıktan sonra turun ne kadar süreceğini seçebilirsiniz.
 - Oyun sırasında ekranın ortasındaki daire her 4 saniyede bir renk değiştirir. Daire yeşile döndüğünde mümkün olduğunca hızlı bir şekilde **Space** tuşuna basın, ardından daire anında başka bir renge geçer.
 - Sağ üst köşedeki **Kapat** düğmesi oyundan erken çıkmanızı sağlar.
-- Tur bittiğinde ortalama tepki süreniz gösterilir.
+- Oyun sonrasında sonuçlar otomatik olarak kaydedilir ve ana menüdeki **Leaderboard** bölümünden önceki oturumların ortalamalarını ve tüm tepki sürelerini görebilirsiniz.
