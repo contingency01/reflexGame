@@ -90,16 +90,36 @@ def select_duration():
         clock.tick(60)
 
 
+def draw_barplot(values, pos, size):
+    """Draw a simple barplot of the given values using pygame."""
+    if not values:
+        return
+    x, y = pos
+    width, height = size
+    max_val = max(values)
+    bar_width = max(1, width // len(values))
+    for i, val in enumerate(values):
+        bar_height = int(val / max_val * height)
+        rect = pygame.Rect(x + i * bar_width, y + height - bar_height, bar_width - 2, bar_height)
+        pygame.draw.rect(screen, GREEN, rect)
+
+
 def show_leaderboard():
     data = load_leaderboard()
+    last_entry = data[-1] if data else None
+    times = last_entry.get("Süreler", []) if last_entry else []
+    avg = last_entry.get("Ortalama", 0) if last_entry else 0
     while True:
         screen.fill((0, 0, 0))
         draw_text("Leaderboard", (WIDTH // 2, 40))
-        y = 100
-        for i, entry in enumerate(data, start=1):
-            line = f"{i}. Ortalama: {entry['Ortalama']:.2f} ms Süreler: {entry['Süreler']}"
-            draw_text(line, (WIDTH // 2, y))
-            y += 40
+        if last_entry:
+            draw_text(f"Ortalama: {avg:.2f} ms", (WIDTH // 2, 100))
+            plot_pos = (50, 150)
+            plot_size = (WIDTH - 100, 300)
+            pygame.draw.rect(screen, (255, 255, 255), (*plot_pos, *plot_size), 1)
+            draw_barplot(times, plot_pos, plot_size)
+        else:
+            draw_text("No data yet", (WIDTH // 2, HEIGHT // 2))
         back_rect = draw_button("Geri", (WIDTH // 2, HEIGHT - 40))
         pygame.display.flip()
 
@@ -138,7 +158,8 @@ def main_menu():
 
 
 def run_game(duration_ms):
-    current_color = random.choice(COLORS)
+    # Ensure the first color is never green
+    current_color = random.choice([c for c in COLORS if c != GREEN])
     last_change = pygame.time.get_ticks()
     waiting_for_press = False
     green_time = 0
