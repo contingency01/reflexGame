@@ -1,6 +1,8 @@
 import pygame
 import sys
 import random
+import json
+import os
 
 # Initialize Pygame
 pygame.init()
@@ -23,6 +25,26 @@ COLORS = [
 
 COLOR_CHANGE_INTERVAL = 3000  # milliseconds
 GAME_DURATION = 5 * 60 * 1000  # default game duration in milliseconds
+LEADERBOARD_FILE = "leaderboard.json"
+
+
+def load_leaderboard():
+    if os.path.exists(LEADERBOARD_FILE):
+        with open(LEADERBOARD_FILE, "r") as f:
+            return json.load(f)
+    return []
+
+
+def save_leaderboard(data):
+    with open(LEADERBOARD_FILE, "w") as f:
+        json.dump(data, f)
+
+
+def choose_new_color(current_color, allow_green=True):
+    choices = [c for c in COLORS if c != current_color]
+    if not allow_green:
+        choices = [c for c in choices if c != GREEN]
+    return random.choice(choices)
 
 
 def draw_text(text, pos, color=(255, 255, 255)):
@@ -68,11 +90,35 @@ def select_duration():
         clock.tick(60)
 
 
+def show_leaderboard():
+    data = load_leaderboard()
+    while True:
+        screen.fill((0, 0, 0))
+        draw_text("Leaderboard", (WIDTH // 2, 40))
+        y = 100
+        for i, entry in enumerate(data, start=1):
+            line = f"{i}. Avg: {entry['average']:.2f} ms Times: {entry['times']}"
+            draw_text(line, (WIDTH // 2, y))
+            y += 40
+        back_rect = draw_button("Geri", (WIDTH // 2, HEIGHT - 40))
+        pygame.display.flip()
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if back_rect.collidepoint(event.pos):
+                    return
+        clock.tick(60)
+
+
 def main_menu():
     while True:
         screen.fill((0, 0, 0))
-        start_rect = draw_button("Başla", (WIDTH // 2, HEIGHT // 2 - 50))
-        exit_rect = draw_button("Kapat", (WIDTH // 2, HEIGHT // 2 + 50))
+        start_rect = draw_button("Başla", (WIDTH // 2, HEIGHT // 2 - 60))
+        leaderboard_rect = draw_button("Leaderboard", (WIDTH // 2, HEIGHT // 2))
+        exit_rect = draw_button("Kapat", (WIDTH // 2, HEIGHT // 2 + 60))
         pygame.display.flip()
 
         for event in pygame.event.get():
@@ -81,7 +127,10 @@ def main_menu():
                 sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if start_rect.collidepoint(event.pos):
-                    return select_duration()
+                    duration = select_duration()
+                    run_game(duration)
+                if leaderboard_rect.collidepoint(event.pos):
+                    show_leaderboard()
                 if exit_rect.collidepoint(event.pos):
                     pygame.quit()
                     sys.exit()
@@ -93,6 +142,9 @@ def run_game(duration_ms):
     last_change = pygame.time.get_ticks()
     waiting_for_press = False
     green_time = 0
+    if current_color == GREEN:
+        green_time = pygame.time.get_ticks()
+        waiting_for_press = True
     responses = []
 
     start_time = pygame.time.get_ticks()
@@ -117,13 +169,12 @@ def run_game(duration_ms):
                     waiting_for_press = False
                     now = pygame.time.get_ticks()
                     # immediately change to a non-green color
-                    non_green = [c for c in COLORS if c != GREEN]
-                    current_color = random.choice(non_green)
+                    current_color = choose_new_color(current_color, allow_green=False)
                     last_change = now
             
         now = pygame.time.get_ticks()
         if now - last_change >= COLOR_CHANGE_INTERVAL:
-            current_color = random.choice(COLORS)
+            current_color = choose_new_color(current_color)
             last_change = now
             if current_color == GREEN:
                 green_time = now
@@ -133,27 +184,15 @@ def run_game(duration_ms):
 
         clock.tick(60)
 
-    # Calculate average reaction time
-    if responses:
-        avg = sum(responses) / len(responses)
-        result_text = f"Ortalama reaksiyon: {avg:.2f} ms"
-    else:
-        result_text = "Ortalama 0."
-
-    while True:
-        for event in pygame.event.get():
-            if event.type in (pygame.QUIT, pygame.KEYDOWN, pygame.MOUSEBUTTONDOWN):
-                return
-        screen.fill((0, 0, 0))
-        draw_text(result_text, (WIDTH // 2, HEIGHT // 2))
-        pygame.display.flip()
-        clock.tick(60)
+    # Save results to leaderboard
+    avg = sum(responses) / len(responses) if responses else 0
+    data = load_leaderboard()
+    data.append({"average": avg, "times": responses})
+    save_leaderboard(data)
 
 
 def main():
-    while True:
-        duration = main_menu()
-        run_game(duration)
+    main_menu()
 
 
 if __name__ == "__main__":
