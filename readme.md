@@ -1,25 +1,25 @@
-# Reflex Game
+# Refleks Oyunu
 
-This is a simple Pygame project that measures reaction time.
+Bu proje, tepki sürenizi ölçen basit bir Pygame uygulamasıdır.
 
-## How to Run
+## Çalıştırma
 
-1. Install the dependencies:
+1. Bağımlılıkları yükleyin:
 
 ```bash
 pip install -r requirements.txt
 ```
 
-2. Run the game:
+2. Oyunu başlatın:
 
 ```bash
 python main.py
 ```
 
-## Gameplay
+## Oynanış
 
-- The main menu lets you start the game or exit the application. Buttons highlight when hovered.
-- After choosing **Start Game** you can select how long the round will last.
-- During the game a circle in the center of the screen changes color every 4 seconds. When it turns green, press **Space** as quickly as possible and the circle will immediately switch to a new color.
-- An **Exit** button in the top‑right corner lets you leave the game early.
-- At the end of the round your average reaction time is shown.
+- Ana menüde oyunu başlatabilir veya uygulamayı kapatabilirsiniz. Fareyle üzerlerine gelindiğinde düğmeler vurgulanır.
+- **Başla** seçeneğine tıkladıktan sonra turun ne kadar süreceğini seçebilirsiniz.
+- Oyun sırasında ekranın ortasındaki daire her 4 saniyede bir renk değiştirir. Daire yeşile döndüğünde mümkün olduğunca hızlı bir şekilde **Space** tuşuna basın, ardından daire anında başka bir renge geçer.
+- Sağ üst köşedeki **Kapat** düğmesi oyundan erken çıkmanızı sağlar.
+- Tur bittiğinde ortalama tepki süreniz gösterilir.
