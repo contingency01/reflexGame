@@ -7,7 +7,7 @@ pygame.init()
 
 WIDTH, HEIGHT = 800, 600
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
-pygame.display.set_caption("Reflex Game")
+pygame.display.set_caption("Refleks Oyunu")
 clock = pygame.time.Clock()
 font = pygame.font.SysFont(None, 48)
 
@@ -43,10 +43,10 @@ def draw_button(text, pos):
 def select_duration():
     """Allow the player to choose how long the game will last."""
     options = [
-        (30, "30 Seconds"),
-        (60, "1 Minute"),
-        (120, "2 Minutes"),
-        (300, "5 Minutes"),
+        (30, "30 Saniye"),
+        (60, "1 Dakika"),
+        (120, "2 Dakika"),
+        (300, "5 Dakika"),
     ]
     while True:
         option_rects = []
@@ -82,8 +82,8 @@ def main_menu():
                     sys.exit()
 
         screen.fill((0, 0, 0))
-        start_rect = draw_button("Start Game", (WIDTH // 2, HEIGHT // 2 - 50))
-        exit_rect = draw_button("Exit", (WIDTH // 2, HEIGHT // 2 + 50))
+        start_rect = draw_button("Başla", (WIDTH // 2, HEIGHT // 2 - 50))
+        exit_rect = draw_button("Kapat", (WIDTH // 2, HEIGHT // 2 + 50))
         pygame.display.flip()
         clock.tick(60)
 
@@ -128,16 +128,16 @@ def run_game(duration_ms):
 
         screen.fill((0, 0, 0))
         pygame.draw.circle(screen, current_color, (WIDTH // 2, HEIGHT // 2), 75)
-        exit_rect = draw_button("Exit", (WIDTH - 60, 30))
+        exit_rect = draw_button("Kapat", (WIDTH - 60, 30))
         pygame.display.flip()
         clock.tick(60)
 
     # Calculate average reaction time
     if responses:
         avg = sum(responses) / len(responses)
-        result_text = f"Average Reaction: {avg:.2f} ms"
+        result_text = f"Ortalama reaksiyon: {avg:.2f} ms"
     else:
-        result_text = "No reactions recorded"
+        result_text = "Ortalama 0."
 
     while True:
         for event in pygame.event.get():
