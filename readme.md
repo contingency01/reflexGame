@@ -8,13 +8,13 @@ This project is a simple Pygame application that measures your reaction time.
 
 ``` bash
 pip install -r requirements.txt
-''''
+```
 
 2. Starting the game:
 
 ``` bash
 python main.py
-''''
+```
 
 ## Gameplay
 
